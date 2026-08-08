@@ -1301,7 +1301,7 @@
                     <button class="mc-btn" id="mcQueryBtn">🔍 查询</button>
                 </div>
                 <div id="mcResultArea"></div>
-                <div class="mc-leaderboard-title">📋 在线服务器榜单 (最多30席)</div>
+                <div class="mc-leaderboard-title">📋 在线服务器查询记录</div>
                 <div class="leaderboard-carousel" id="leaderboardCarousel">
                     <div class="leaderboard-track" id="leaderboardTrack"></div>
                 </div>
@@ -1339,7 +1339,7 @@
                 <a class="glass-card link-card" href="https://www.95267710.xyz/" target="_blank" rel="noopener">
                     <img class="link-card-icon" src="https://c-ssl.dtstatic.com/uploads/blog/202301/14/20230114184339_95ced.thumb.400_0.jpeg" alt="图标" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                     <div class="link-card-icon" style="display:none;align-items:center;justify-content:center;font-size:1.4rem;">🎶</div>
-                    <div class="link-card-info"><div class="link-card-title">第三方免费音乐（非个人搭建）</div><div class="link-card-note">稳如老狗非常好用</div></div>
+                    <div class="link-card-info"><div class="link-card-title">第三方免费音乐（非个人搭建）</div><div class="link-card-note">稳定非常好用</div></div>
                 </a>
                 <a class="glass-card link-card" href="https://javatnt.fnos.net/login" target="_blank" rel="noopener">
                     <img class="link-card-icon" src="https://c-ssl.dtstatic.com/uploads/blog/202301/14/20230114184339_95ced.thumb.400_0.jpeg" alt="图标" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
@@ -1746,7 +1746,7 @@
                     const emptyDiv = document.createElement('div');
                     emptyDiv.className = 'leaderboard-item glass-card';
                     emptyDiv.style.cssText = 'flex:1;text-align:center;padding:20px;cursor:default;';
-                    emptyDiv.innerHTML = '<span style="color:var(--text-secondary);">榜单为空，查询在线服务器后自动录入</span>';
+                    emptyDiv.innerHTML = '<span style="color:var(--text-secondary);">记录为空，查询在线服务器后自动录入</span>';
                     leaderboardTrack.appendChild(emptyDiv);
                     leaderboardDots.innerHTML = '';
                     return;
@@ -1894,7 +1894,7 @@
                       </div>
                     </div>
                   </div>`;
-                        showToast('✅ 服务器在线，已录入榜单');
+                        showToast('✅ 服务器在线，已录入记录');
                     } else {
                         removeOfflineFromLeaderboard(address, mcServerTab);
                         if (currentPage === 3) refreshLeaderboardDisplay();
@@ -1903,10 +1903,10 @@
                     <div class="mc-result-icon" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🔴</div>
                     <div class="mc-result-info">
                       <div class="mc-result-status"><span class="status-dot offline"></span> 离线</div>
-                      <div class="mc-result-detail">服务器 ${escapeHTML(address)} 当前离线，未录入榜单。</div>
+                      <div class="mc-result-detail">服务器 ${escapeHTML(address)} 当前离线，未录入记录。</div>
                     </div>
                   </div>`;
-                        showToast('🔴 服务器离线，未录入榜单');
+                        showToast('🔴 服务器离线，未录入记录');
                     }
                 } catch (err) {
                     mcResultArea.innerHTML = `
