@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>柚茶 - javatnt的个人网站</title>
+    <!-- 网站图标 -->
+    <link rel="icon" type="image/jpeg" href="https://c-ssl.dtstatic.com/uploads/blog/202301/14/20230114184339_95ced.thumb.400_0.jpeg">
+    <style>
+        :root {
+            --bg-overlay: rgba(252, 248, 243, 0.85);
+            --card-bg: rgba(255, 255, 255, 0.72);
+            --card-blur: blur(10px) saturate(170%);
+            --text-primary: #3a3029;
+            --text-secondary: #786b60;
+            --border-color: rgba(255, 255, 255, 0.55);
+            --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.10);
+            --shadow-hover: 0 14px 40px rgba(0, 0, 0, 0.15);
+            --nav-bg: rgba(255, 255, 255, 0.65);
+            --nav-blur: blur(16px) saturate(170%);
+            --nav-border: rgba(255, 255, 255, 0.5);
+            --indicator-dot: #3a3029;
+            --indicator-dot-inactive: rgba(58, 48, 41, 0.3);
+            --tag-bg: rgba(255, 255, 255, 0.55);
+            --divider: rgba(0, 0, 0, 0.08);
+            --img-brightness: 1;
+            --page-bg-fallback: #f5f0e8;
+            --avatar-border: rgba(255, 255, 255, 0.7);
+            --input-bg: rgba(255, 255, 255, 0.6);
+            --input-border: rgba(255, 255, 255, 0.5);
+            --btn-bg: rgba(255, 255, 255, 0.65);
+            --toast-bg: rgba(58, 48, 41, 0.9);
+            --toast-text: #fff;
+            --code-bg: rgba(0, 0, 0, 0.04);
+            --dot-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+            --card-highlight: rgba(255, 255, 255, 0.35);
+            --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+        }
+
+        [data-theme="dark"] {
+            --bg-overlay: rgba(22, 20, 18, 0.88);
+            --card-bg: rgba(35, 32, 30, 0.68);
+            --card-blur: blur(12px) saturate(150%);
+            --text-primary: #e9e2db;
+            --text-secondary: #a0958c;
+            --border-color: rgba(255, 255, 255, 0.12);
+            --shadow-light: 0 4px 20px rgba(0, 0, 0, 0.25);
+            --shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.35);
+            --shadow-hover: 0 14px 40px rgba(0, 0, 0, 0.45);
+            --nav-bg: rgba(28, 26, 24, 0.7);
+            --nav-blur: blur(18px) saturate(140%);
+            --nav-border: rgba(255, 255, 255, 0.08);
+            --indicator-dot: #e9e2db;
+            --indicator-dot-inactive: rgba(233, 226, 219, 0.25);
+            --tag-bg: rgba(35, 32, 30, 0.5);
+            --divider: rgba(255, 255, 255, 0.08);
+            --img-brightness: 0.7;
+            --page-bg-fallback: #1a1816;
+            --avatar-border: rgba(255, 255, 255, 0.2);
+            --input-bg: rgba(35, 32, 30, 0.55);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --btn-bg: rgba(35, 32, 30, 0.6);
+            --toast-bg: rgba(233, 226, 219, 0.9);
+            --toast-text: #1a1816;
+            --code-bg: rgba(255, 255, 255, 0.05);
+            --dot-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+            --card-highlight: rgba(255, 255, 255, 0.06);
+            --scrollbar-thumb: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Source Han Sans CN', 'PingFang SC', 'Noto Sans SC', 'Helvetica Neue', -apple-system, sans-serif;
+            background-color: var(--page-bg-fallback);
+            background-image: url('./bz.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            min-height: 100dvh;
+            color: var(--text-primary);
+            transition: color 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: var(--bg-overlay);
+            pointer-events: none;
+            transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: 10px;
+        }
+
+        .theme-toggle-btn {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 9999;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border-color);
+            background: var(--card-bg);
+            backdrop-filter: var(--card-blur);
+            -webkit-backdrop-filter: var(--card-blur);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        .theme-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+        .theme-toggle-btn:active {
+            transform: scale(0.9);
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .theme-toggle-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-primary);
+            fill: none;
+            stroke-width: 1.8;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        [data-theme="dark"] .theme-toggle-btn .moon-icon {
+            opacity: 0;
+            transform: rotate(-90deg) scale(0.5);
+            position: absolute;
+        }
+        [data-theme="dark"] .theme-toggle-btn .sun-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+        [data-theme="light"] .theme-toggle-btn .moon-icon,
+        body:not([data-theme="dark"]) .theme-toggle-btn .moon-icon {
+            opacity: 1;
+            transform: rotate(0deg) scale(1);
+        }
+        [data-theme="light"] .theme-toggle-btn .sun-icon,
+        body:not([data-theme="dark"]) .theme-toggle-btn .sun-icon {
+            opacity: 0;
+            transform: rotate(90deg) scale(0.5);
+            position: absolute;
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px 20px 120px 20px;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        .pages-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+        .page-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(60px);
+            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: transform, opacity;
+            padding-bottom: 20px;
+        }
+        .page-panel.active {
+            position: relative;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+        .page-panel.exit-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            pointer-events: none;
+        }
+        .page-panel.exit-right {
+            opacity: 0;
+            transform: translateX(50px);
+            pointer-events: none;
+        }
+        .page-panel.enter-from-left {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        .page-panel.enter-from-right {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+        .page-panel.enter-from-left.animating,
+        .page-panel.enter-from-right.animating {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: var(--card-blur);
+            -webkit-backdrop-filter: var(--card-blur);
+            border: 1px solid var(--border-color);
+            border-radius: 32px;
+            box-shadow: var(--shadow-light);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+        }
+        .glass-card:active {
+            transform: scale(0.97);
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card.no-hover:hover {
+            transform: none;
+            box-shadow: var(--shadow-light);
+        }
+        .glass-card.no-hover:active {
+            transform: none;
+        }
+
+        img.rounded-img {
+            border-radius: 18px;
+            object-fit: cover;
+            display: block;
+        }
+        img.avatar-img {
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            border: 2.5px solid var(--avatar-border);
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.1);
+        }
+
+        .home-main-card {
+            text-align: center;
+            padding: 40px 30px 35px;
+            max-width: 620px;
+            margin: 20px auto;
+            animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .home-avatar {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: block;
+            object-fit: cover;
+            border: 3px solid var(--avatar-border);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: default;
+        }
+        .home-avatar:hover {
+            transform: scale(1.03) rotate(2deg);
+        }
+        .home-title {
+            font-size: 2.6rem;
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+        .home-signature-tag {
+            display: inline-block;
+            padding: 8px 22px;
+            border-radius: 22px;
+            background: var(--tag-bg);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid var(--border-color);
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            letter-spacing: 0.03em;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-3d-wrapper {
+            position: relative;
+            width: 100%;
+            height: 340px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-top: 8px;
+            border-radius: 20px;
+        }
+        .carousel-3d-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .carousel-3d-item {
+            position: absolute;
+            width: 55%;
+            max-width: 380px;
+            aspect-ratio: 4/3;
+            border-radius: 18px;
+            overflow: hidden;
+            transition: all 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: var(--shadow-medium);
+            will-change: transform, opacity, filter;
+        }
+        .carousel-3d-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 18px;
+            filter: brightness(var(--img-brightness));
+            transition: filter 0.4s ease;
+        }
+        .carousel-3d-item.pos-center {
+            transform: translateX(0) scale(1);
+            opacity: 1;
+            filter: blur(0px);
+            z-index: 5;
+            box-shadow: var(--shadow-hover);
+        }
+        .carousel-3d-item.pos-left {
+            transform: translateX(-58%) scale(0.7);
+            opacity: 0.4;
+            filter: blur(6px);
+            z-index: 3;
+            pointer-events: none;
+        }
+        .carousel-3d-item.pos-right {
+            transform: translateX(58%) scale(0.7);
+            opacity: 0.4;
+            filter: blur(6px);
+            z-index: 3;
+            pointer-events: none;
+        }
+        .carousel-3d-item.pos-far-left {
+            transform: translateX(-85%) scale(0.5);
+            opacity: 0.12;
+            filter: blur(10px);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .carousel-3d-item.pos-far-right {
+            transform: translateX(85%) scale(0.5);
+            opacity: 0.12;
+            filter: blur(10px);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .carousel-3d-item.pos-hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(0) scale(0.4);
+            filter: blur(12px);
+            z-index: 0;
+        }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-light);
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .carousel-arrow:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-50%) scale(1.08);
+        }
+        .carousel-arrow:active {
+            transform: translateY(-50%) scale(0.88);
+            transition: transform 0.12s ease;
+        }
+        .carousel-arrow.arrow-left {
+            left: 8px;
+        }
+        .carousel-arrow.arrow-right {
+            right: 8px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--indicator-dot-inactive);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+            box-shadow: var(--dot-shadow);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .carousel-dot.active {
+            background: var(--indicator-dot);
+            transform: scale(1.35);
+            box-shadow: 0 0 0 3px var(--card-highlight), var(--dot-shadow);
+        }
+
+        .announce-card {
+            padding: 24px 26px;
+            margin-bottom: 18px;
+            border-radius: 32px;
+        }
+        .announce-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .announce-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        .announce-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .announce-nickname {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+        .announce-time {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.02em;
+        }
+        .announce-body {
+            color: var(--text-primary);
+            font-size: 1rem;
+            line-height: 1.7;
+            letter-spacing: 0.03em;
+        }
+        .announce-image-wrap {
+            margin-top: 14px;
+            text-align: center;
+        }
+        .announce-image-wrap img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            display: inline-block;
+            border: 2px solid var(--border-color);
+            box-shadow: var(--shadow-light);
+            transition: transform 0.35s ease;
+        }
+        .announce-image-wrap img:hover {
+            transform: scale(1.06);
+        }
+
+        .contact-row {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 22px;
+        }
+        .contact-card {
+            flex: 1 1 240px;
+            max-width: 320px;
+            min-width: 220px;
+            padding: 26px 20px;
+            text-align: center;
+            border-radius: 32px;
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .contact-card img.contact-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 12px;
+            display: block;
+        }
+        .contact-card .contact-icon-fallback {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--text-secondary);
+            border: 2px solid var(--border-color);
+        }
+        .contact-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        .contact-detail {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+            word-break: break-all;
+        }
+        .contact-bio {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 6px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+        .contact-hint {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            transition: color 0.3s;
+            letter-spacing: 0.03em;
+        }
+        .contact-hint:hover {
+            color: var(--text-primary);
+        }
+
+        .mc-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+        .mc-tab {
+            padding: 10px 20px;
+            border-radius: 24px;
+            border: 1px solid var(--border-color);
+            background: var(--btn-bg);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mc-tab.active {
+            background: var(--card-bg);
+            color: var(--text-primary);
+            font-weight: 700;
+            box-shadow: var(--shadow-light);
+            border-color: var(--text-primary);
+        }
+        .mc-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        .mc-input-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .mc-input {
+            flex: 1;
+            min-width: 180px;
+            padding: 12px 18px;
+            border-radius: 28px;
+            border: 1.5px solid var(--input-border);
+            background: var(--input-bg);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            letter-spacing: 0.03em;
+        }
+        .mc-input:focus {
+            border-color: var(--text-primary);
+            box-shadow: 0 0 0 4px var(--card-highlight);
+        }
+        .mc-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+        .mc-btn {
+            padding: 12px 24px;
+            border-radius: 28px;
+            border: 1.5px solid var(--border-color);
+            background: var(--btn-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-family: inherit;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        .mc-btn:active {
+            transform: scale(0.93);
+            transition: transform 0.12s ease;
+        }
+        .mc-result-card {
+            padding: 20px 22px;
+            border-radius: 28px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            transition: all 0.4s ease;
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        .mc-result-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--code-bg);
+        }
+        .mc-result-info {
+            flex: 1;
+            min-width: 140px;
+        }
+        .mc-result-status {
+            font-weight: 700;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .status-dot.online {
+            background: #4caf50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+        .status-dot.offline {
+            background: #e57373;
+            box-shadow: 0 0 10px rgba(229, 115, 115, 0.5);
+        }
+        .mc-result-detail {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+        .mc-leaderboard-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            letter-spacing: 0.04em;
+        }
+        .leaderboard-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+        .leaderboard-track {
+            display: flex;
+            transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 12px;
+            padding: 4px 0;
+        }
+        .leaderboard-item {
+            flex: 0 0 calc(33.333% - 8px);
+            min-width: 160px;
+            padding: 16px 14px;
+            border-radius: 24px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.35s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .leaderboard-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        .leaderboard-item:active {
+            transform: scale(0.95);
+            transition: transform 0.12s ease;
+        }
+        .leaderboard-item .lb-addr {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            word-break: break-all;
+            margin-bottom: 4px;
+        }
+        .leaderboard-item .lb-players {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+        .leaderboard-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        .leaderboard-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--indicator-dot-inactive);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .leaderboard-dot.active {
+            background: var(--indicator-dot);
+            transform: scale(1.4);
+        }
+        .leaderboard-arrows {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        .leaderboard-arrow-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            background: var(--btn-bg);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .leaderboard-arrow-btn:hover {
+            box-shadow: var(--shadow-medium);
+        }
+        .leaderboard-arrow-btn:active {
+            transform: scale(0.85);
+            transition: transform 0.1s ease;
+        }
+
+        .downtime-card {
+            padding: 28px 24px;
+            text-align: center;
+            margin-bottom: 22px;
+            border-radius: 32px;
+        }
+        .downtime-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            letter-spacing: 0.04em;
+        }
+        .downtime-digits {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+        .downtime-unit {
+            text-align: center;
+            min-width: 50px;
+        }
+        .downtime-num {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+            transition: transform 0.15s cubic-bezier(0.4, 0, 0.6, 1);
+            display: inline-block;
+            line-height: 1;
+        }
+        .downtime-num.bounce {
+            animation: digitBounce 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes digitBounce {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            30% {
+                transform: scale(1.25);
+            }
+            60% {
+                transform: scale(0.9);
+            }
+            80% {
+                transform: scale(1.05);
+            }
+        }
+        .downtime-label-small {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+        }
+        .links-section-title {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            letter-spacing: 0.04em;
+            text-align: center;
+            opacity: 0.8;
+        }
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 18px;
+            border-radius: 24px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.35s ease;
+        }
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+        .link-card:active {
+            transform: scale(0.96);
+            transition: transform 0.12s ease;
+        }
+        .link-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: var(--code-bg);
+        }
+        .link-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .link-card-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+        .link-card-note {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            opacity: 0.8;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--toast-bg);
+            color: var(--toast-text);
+            padding: 10px 22px;
+            border-radius: 24px;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+        .toast-msg.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9990;
+            display: flex;
+            gap: 6px;
+            background: var(--nav-bg);
+            backdrop-filter: var(--nav-blur);
+            -webkit-backdrop-filter: var(--nav-blur);
+            border: 1px solid var(--nav-border);
+            border-radius: 32px;
+            padding: 6px 10px;
+            box-shadow: var(--shadow-medium);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            white-space: nowrap;
+        }
+        .nav-item {
+            padding: 10px 15px;
+            border-radius: 26px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            position: relative;
+            text-decoration: none;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+        .nav-item.active {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background: var(--text-primary);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        .nav-item:hover {
+            color: var(--text-primary);
+        }
+        .nav-item:active {
+            transform: scale(0.9);
+            transition: transform 0.12s ease;
+        }
+        .nav-icon {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        @media (max-width: 768px) {
+            .home-title {
+                font-size: 2rem;
+            }
+            .carousel-3d-wrapper {
+                height: 260px;
+            }
+            .carousel-3d-item {
+                width: 65%;
+                max-width: 280px;
+            }
+            .carousel-3d-item.pos-left {
+                transform: translateX(-48%) scale(0.7);
+            }
+            .carousel-3d-item.pos-right {
+                transform: translateX(48%) scale(0.7);
+            }
+            .carousel-3d-item.pos-far-left {
+                transform: translateX(-70%) scale(0.5);
+            }
+            .carousel-3d-item.pos-far-right {
+                transform: translateX(70%) scale(0.5);
+            }
+            .nav-item {
+                padding: 9px 10px;
+                font-size: 0.75rem;
+                gap: 3px;
+            }
+            .nav-item .nav-label-full {
+                display: none;
+            }
+            .nav-item .nav-label-short {
+                display: inline;
+            }
+            .nav-icon {
+                font-size: 1rem;
+            }
+            .contact-row {
+                flex-direction: column;
+                align-items: center;
+            }
+            .contact-card {
+                max-width: 90%;
+                flex: none;
+                width: 100%;
+            }
+            .leaderboard-item {
+                flex: 0 0 calc(50% - 6px);
+                min-width: 130px;
+            }
+            .downtime-num {
+                font-size: 2rem;
+            }
+            .bottom-nav {
+                gap: 2px;
+                padding: 5px 7px;
+                border-radius: 28px;
+                bottom: 8px;
+            }
+            .app-container {
+                padding: 12px 12px 110px 12px;
+            }
+        }
+        @media (max-width: 420px) {
+            .home-title {
+                font-size: 1.6rem;
+            }
+            .carousel-3d-wrapper {
+                height: 200px;
+            }
+            .carousel-3d-item {
+                width: 70%;
+                max-width: 220px;
+            }
+            .carousel-3d-item.pos-left {
+                transform: translateX(-38%) scale(0.65);
+            }
+            .carousel-3d-item.pos-right {
+                transform: translateX(38%) scale(0.65);
+            }
+            .carousel-3d-item.pos-far-left,
+            .carousel-3d-item.pos-far-right {
+                opacity: 0;
+                pointer-events: none;
+            }
+            .nav-item {
+                padding: 7px 6px;
+                font-size: 0.65rem;
+                gap: 2px;
+                border-radius: 20px;
+            }
+            .nav-item .nav-label-short {
+                display: none;
+            }
+            .nav-icon {
+                font-size: 1rem;
+            }
+            .nav-item.active {
+                font-size: 0.7rem;
+            }
+            .bottom-nav {
+                gap: 0px;
+                padding: 4px 5px;
+                border-radius: 24px;
+                bottom: 4px;
+            }
+            .leaderboard-item {
+                flex: 0 0 calc(100% - 4px);
+                min-width: 120px;
+            }
+            .downtime-num {
+                font-size: 1.5rem;
+            }
+            .downtime-unit {
+                min-width: 35px;
+            }
+            .downtime-digits {
+                gap: 4px;
+            }
+            .app-container {
+                padding: 8px 8px 100px 8px;
+            }
+            .theme-toggle-btn {
+                top: 10px;
+                right: 10px;
+                width: 36px;
+                height: 36px;
+            }
+            .theme-toggle-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="切换主题" title="切换明暗主题">
+        <!-- 月亮图标(亮色模式显示) -->
+        <svg class="moon-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <!-- 太阳图标(暗黑模式显示) -->
+        <svg class="sun-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Toast提示 -->
+    <div class="toast-msg" id="toastMsg"></div>
+
+    <!-- 主应用容器 -->
+    <div class="app-container" id="appContainer">
+
+        <!-- 页面容器 -->
+        <div class="pages-wrapper" id="pagesWrapper">
+
+            <!-- 第1页：主页 (索引0) -->
+            <div class="page-panel active" data-page="0" id="pageHome">
+                <div class="glass-card home-main-card no-hover">
+                    <img class="home-avatar avatar-img"
+                    src="https://q1.qlogo.cn/g?b=qq&nk=3669190549&s=640"
+                    alt="头像"
+                    loading="eager"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"
+                    style="display:block;">
+                    <div class="home-avatar avatar-img" style="display:none;width:110px;height:110px;border-radius:50%;margin:0 auto 20px;background:var(--card-bg);align-items:center;justify-content:center;font-size:2.5rem;color:var(--text-secondary);border:3px solid var(--avatar-border);box-shadow:0 6px 24px rgba(0,0,0,0.12);">J</div>
+                    <h1 class="home-title">Hi 欢迎来到javatnt的个人网站~</h1>
+                    <div class="home-signature-tag">北冥有鱼，其名为鲲。</div>
+
+                    <!-- 三维错位轮播 -->
+                    <div class="carousel-3d-wrapper" id="carousel3D">
+                        <div class="carousel-3d-track" id="carouselTrack"></div>
+                        <button class="carousel-arrow arrow-left" id="carouselPrev">◂</button>
+                        <button class="carousel-arrow arrow-right" id="carouselNext">▸</button>
+                    </div>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                </div>
+            </div>
+
+            <!-- 第2页：公告 (索引1) -->
+            <div class="page-panel" data-page="1" id="pageAnnounce">
+                <!-- 公告1 -->
+                <div class="glass-card announce-card">
+                    <div class="announce-header">
+                        <img class="announce-avatar avatar-img" src="https://q1.qlogo.cn/g?b=qq&nk=3669190549&s=640" alt="头像" onerror="this.style.background='var(--card-bg)';this.style.minWidth='40px';">
+                        <div class="announce-meta">
+                            <span class="announce-nickname">javatnt</span>
+                            <span class="announce-time">2026年 8月 7日 14:26:47</span>
+                        </div>
+                    </div>
+                    <div class="announce-body">我的世界服务器停服，后会有期</div>
+                </div>
+                <!-- 公告2 -->
+                <div class="glass-card announce-card">
+                    <div class="announce-header">
+                        <img class="announce-avatar avatar-img" src="https://q1.qlogo.cn/g?b=qq&nk=3669190549&s=640" alt="头像" onerror="this.style.background='var(--card-bg)';this.style.minWidth='40px';">
+                        <div class="announce-meta">
+                            <span class="announce-nickname">javatnt</span>
+                            <span class="announce-time">2026年 8月 7日 14:20:27</span>
+                        </div>
+                    </div>
+                    <div class="announce-body">感谢蒙山霍金 - 肥波，恭喜榜上有名</div>
+                    <div class="announce-image-wrap">
+                        <img src="https://q1.qlogo.cn/g?b=qq&nk=3670984946&s=640" alt="配图" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block';">
+                        <div style="display:none;width:70px;height:70px;border-radius:50%;background:var(--card-bg);border:2px solid var(--border-color);box-shadow:var(--shadow-light);vertical-align:middle;line-height:70px;text-align:center;color:var(--text-secondary);font-size:1.5rem;">🐟</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 第3页：反馈联系 (索引2) - 已修复结构，清欢渡头像已更换为 QQ 3982537603 -->
+            <div class="page-panel" data-page="2" id="pageContact">
+                <div class="contact-row">
+                    <!-- 卡片1 -->
+                    <div class="glass-card contact-card" onclick="this.style.transform='scale(0.94)';setTimeout(()=>this.style.transform='',200);">
+                        <img class="contact-avatar avatar-img" src="https://q1.qlogo.cn/g?b=qq&nk=3669190549&s=640" alt="头像" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="contact-icon-fallback" style="display:none;">🧑‍💻</div>
+                        <div class="contact-name">javatnt</div>
+                        <div class="contact-detail">a3677284101@outlook.com</div>
+                        <div class="contact-bio">联系开发者</div>
+                    </div>
+                    <!-- 卡片2：清欢渡群，头像已改为 QQ 3982537603 -->
+                    <div class="glass-card contact-card" onclick="window.open('https://qm.qq.com/q/43nJ8BzpVe','_blank');" style="cursor:pointer;">
+                        <img class="contact-avatar avatar-img" src="https://q1.qlogo.cn/g?b=qq&nk=3982537603&s=640" alt="头像" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="contact-icon-fallback" style="display:none;">👥</div>
+                        <div class="contact-name">Minecraft 清欢渡</div>
+                        <div class="contact-detail">群号: 940937735</div>
+                        <div class="contact-bio">javatnt 的交流群</div>
+                    </div>
+                    <!-- 卡片3 -->
+                    <div class="glass-card contact-card" onclick="this.style.transform='scale(0.94)';setTimeout(()=>this.style.transform='',200);">
+                        <img class="contact-avatar avatar-img" src="https://q1.qlogo.cn/g?b=qq&nk=3643901556&s=640" alt="头像" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                        <div class="contact-icon-fallback" style="display:none;">🙂</div>
+                        <div class="contact-name">Ren Minxing</div>
+                        <div class="contact-detail" style="opacity:0.5;">—</div>
+                        <div class="contact-bio">javatnt朋友，暂无更多内容</div>
+                    </div>
+                </div>
+                <div class="contact-hint" id="contactToMC">📡 点击此处跳转 MC服务器查询页面 →</div>
+            </div>
+
+            <!-- 第4页：MC服务器查询 (索引3) -->
+            <div class="page-panel" data-page="3" id="pageMC">
+                <div class="mc-tabs">
+                    <button class="mc-tab active" data-tab="java">Java版</button>
+                    <button class="mc-tab" data-tab="bedrock">基岩版</button>
+                </div>
+                <div class="mc-input-row">
+                    <input type="text" class="mc-input" id="mcServerInput" placeholder="输入服务器IP或域名（无需端口）" autocomplete="off">
+                    <button class="mc-btn" id="mcQueryBtn">🔍 查询</button>
+                </div>
+                <div id="mcResultArea"></div>
+                <div class="mc-leaderboard-title">📋 在线服务器榜单 (最多30席)</div>
+                <div class="leaderboard-carousel" id="leaderboardCarousel">
+                    <div class="leaderboard-track" id="leaderboardTrack"></div>
+                </div>
+                <div class="leaderboard-arrows">
+                    <button class="leaderboard-arrow-btn" id="lbPrev">◂</button>
+                    <button class="leaderboard-arrow-btn" id="lbNext">▸</button>
+                </div>
+                <div class="leaderboard-dots" id="leaderboardDots"></div>
+            </div>
+
+            <!-- 第5页：关于 (索引4) -->
+            <div class="page-panel" data-page="4" id="pageAbout">
+                <!-- 停服计时 -->
+                <div class="glass-card downtime-card no-hover" id="downtimeCard">
+                    <div class="downtime-label">清欢渡服务器已停服</div>
+                    <div class="downtime-digits" id="downtimeDigits">
+                        <div class="downtime-unit"><span class="downtime-num" id="dtDays">0</span><div class="downtime-label-small">天</div></div>
+                        <div class="downtime-unit"><span class="downtime-num" id="dtHours">0</span><div class="downtime-label-small">时</div></div>
+                        <div class="downtime-unit"><span class="downtime-num" id="dtMinutes">0</span><div class="downtime-label-small">分</div></div>
+                        <div class="downtime-unit"><span class="downtime-num" id="dtSeconds">0</span><div class="downtime-label-small">秒</div></div>
+                    </div>
+                </div>
+                <!-- 有趣链接 -->
+                <div class="links-section-title">🔗 本链接由 javatnt 创建，均可安全访问</div>
+                <a class="glass-card link-card" href="https://nyj.cc.cd/" target="_blank" rel="noopener">
+                    <img class="link-card-icon" src="https://c-ssl.dtstatic.com/uploads/blog/202301/14/20230114184339_95ced.thumb.400_0.jpeg" alt="图标" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="link-card-icon" style="display:none;align-items:center;justify-content:center;font-size:1.4rem;">🎵</div>
+                    <div class="link-card-info"><div class="link-card-title">免费音乐</div><div class="link-card-note">免费的要什么自行车</div></div>
+                </a>
+                <a class="glass-card link-card" href="https://rx2090.cc.cd/" target="_blank" rel="noopener">
+                    <img class="link-card-icon" src="https://c-ssl.dtstatic.com/uploads/blog/202301/14/20230114184339_95ced.thumb.400_0.jpeg" alt="图标" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="link-card-icon" style="display:none;align-items:center;justify-content:center;font-size:1.4rem;">🌐</div>
+                    <div class="link-card-info"><div class="link-card-title">朋友网站</div><div class="link-card-note">进去悄悄</div></div>
+                </a>
+                <a class="glass-card link-card" href="https://www.95267710.xyz/" target="_blank" rel="noopener">
+                    <img class="link-card-icon" src="https://c-ssl.dtstatic.com/uploads/blog/202301/14/20230114184339_95ced.thumb.400_0.jpeg" alt="图标" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="link-card-icon" style="display:none;align-items:center;justify-content:center;font-size:1.4rem;">🎶</div>
+                    <div class="link-card-info"><div class="link-card-title">第三方免费音乐（非个人搭建）</div><div class="link-card-note">稳如老狗非常好用</div></div>
+                </a>
+                <a class="glass-card link-card" href="https://javatnt.fnos.net/login" target="_blank" rel="noopener">
+                    <img class="link-card-icon" src="https://c-ssl.dtstatic.com/uploads/blog/202301/14/20230114184339_95ced.thumb.400_0.jpeg" alt="图标" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <div class="link-card-icon" style="display:none;align-items:center;justify-content:center;font-size:1.4rem;">🖥️</div>
+                    <div class="link-card-info"><div class="link-card-title">NAS服务器</div><div class="link-card-note">服务器入口喵</div></div>
+                </a>
+            </div>
+
+        </div><!-- /pages-wrapper -->
+    </div><!-- /app-container -->
+
+    <!-- 底部导航栏 -->
+    <nav class="bottom-nav" id="bottomNav">
+        <div class="nav-item active" data-nav="0">
+            <span class="nav-icon">🏠</span><span class="nav-label-full">主页</span><span class="nav-label-short" style="display:none;">主页</span>
+        </div>
+        <div class="nav-item" data-nav="1">
+            <span class="nav-icon">📢</span><span class="nav-label-full">公告</span><span class="nav-label-short" style="display:none;">公告</span>
+        </div>
+        <div class="nav-item" data-nav="2">
+            <span class="nav-icon">💬</span><span class="nav-label-full">反馈联系</span><span class="nav-label-short" style="display:none;">反馈</span>
+        </div>
+        <div class="nav-item" data-nav="3">
+            <span class="nav-icon">🎮</span><span class="nav-label-full">MC服务器查询</span><span class="nav-label-short" style="display:none;">MC查询</span>
+        </div>
+        <div class="nav-item" data-nav="4">
+            <span class="nav-icon">ℹ️</span><span class="nav-label-full">关于</span><span class="nav-label-short" style="display:none;">关于</span>
+        </div>
+    </nav>
+
+    <script>
+        (function() {
+            // ==================== 全局状态 ====================
+            const TOTAL_PAGES = 5;
+            let currentPage = 0;
+            let previousPage = 0;
+            let isPageTransitioning = false;
+            let carouselIndex = 0;
+            const carouselImages = ['./1.png', './2.png', './3.png', './4.png', './5.png', './6.png'];
+            const totalCarouselSlides = carouselImages.length;
+            let carouselAutoTimer = null;
+            let carouselPaused = false;
+            let mcServerTab = 'java'; // 'java' | 'bedrock'
+            let leaderboardData = []; // 服务器榜单
+            const MAX_LEADERBOARD = 30;
+            let lbCurrentPage = 0;
+            let lbItemsPerPage = 5;
+            let leaderboardRefreshTimer = null;
+            const downtimeStart = new Date('2026-08-07T14:27:34').getTime();
+            let downtimePrevValues = { days: -1, hours: -1, minutes: -1, seconds: -1 };
+
+            // ==================== DOM引用 ====================
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const body = document.body;
+            const pagesWrapper = document.getElementById('pagesWrapper');
+            const pagePanels = document.querySelectorAll('.page-panel');
+            const navItems = document.querySelectorAll('.nav-item');
+            const toastMsg = document.getElementById('toastMsg');
+            const appContainer = document.getElementById('appContainer');
+            const bottomNav = document.getElementById('bottomNav');
+
+            // ==================== 主题管理 ====================
+            function getStoredTheme() {
+                try {
+                    return localStorage.getItem('yucha_theme') || 'light';
+                } catch (e) {
+                    return 'light';
+                }
+            }
+
+            function setStoredTheme(theme) {
+                try {
+                    localStorage.setItem('yucha_theme', theme);
+                } catch (e) {}
+            }
+
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    body.setAttribute('data-theme', 'dark');
+                } else {
+                    body.removeAttribute('data-theme');
+                    body.setAttribute('data-theme', 'light');
+                }
+            }
+
+            function toggleTheme() {
+                const current = body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+                const next = current === 'dark' ? 'light' : 'dark';
+                applyTheme(next);
+                setStoredTheme(next);
+                // 更新所有图片亮度
+                updateAllImageBrightness(next);
+            }
+
+            function updateAllImageBrightness(theme) {
+                const brightness = theme === 'dark' ? '0.7' : '1';
+                document.querySelectorAll('.carousel-3d-item img').forEach(img => {
+                    img.style.filter = `brightness(${brightness})`;
+                });
+            }
+
+            // 初始化主题
+            const savedTheme = getStoredTheme();
+            applyTheme(savedTheme);
+            updateAllImageBrightness(savedTheme);
+            themeToggleBtn.addEventListener('click', toggleTheme);
+
+            // ==================== Toast提示 ====================
+            let toastTimeout = null;
+
+            function showToast(message, duration = 1800) {
+                if (toastTimeout) clearTimeout(toastTimeout);
+                toastMsg.textContent = message;
+                toastMsg.classList.add('show');
+                toastTimeout = setTimeout(() => {
+                    toastMsg.classList.remove('show');
+                    toastTimeout = null;
+                }, duration);
+            }
+
+            // ==================== 页面切换 ====================
+            function switchPage(targetIndex, direction) {
+                if (isPageTransitioning || targetIndex === currentPage) return;
+                if (targetIndex < 0 || targetIndex >= TOTAL_PAGES) return;
+                isPageTransitioning = true;
+                previousPage = currentPage;
+                const oldPanel = pagePanels[currentPage];
+                const newPanel = pagePanels[targetIndex];
+
+                // 确定动画方向
+                let exitClass, enterClass;
+                if (direction === 'right' || (direction === 'auto' && targetIndex > currentPage)) {
+                    exitClass = 'exit-left';
+                    enterClass = 'enter-from-right';
+                } else {
+                    exitClass = 'exit-right';
+                    enterClass = 'enter-from-left';
+                }
+
+                // 旧页面退出
+                oldPanel.classList.remove('active');
+                oldPanel.classList.add(exitClass);
+
+                // 新页面准备
+                newPanel.style.position = '';
+                newPanel.style.opacity = '';
+                newPanel.style.transform = '';
+                newPanel.style.pointerEvents = '';
+
+                newPanel.classList.remove('exit-left', 'exit-right', 'enter-from-left', 'enter-from-right');
+                newPanel.classList.add(enterClass);
+                // 强制回流
+                void newPanel.offsetWidth;
+                newPanel.classList.add('active', 'animating');
+
+                // 动画结束后清理
+                const cleanup = () => {
+                    oldPanel.classList.remove(exitClass, 'animating');
+                    newPanel.classList.remove(enterClass, 'animating');
+                    // 清除所有页面的内联样式，完全由CSS控制
+                    pagePanels.forEach(p => {
+                        p.style.position = '';
+                        p.style.opacity = '';
+                        p.style.transform = '';
+                        p.style.pointerEvents = '';
+                        p.classList.remove('active');
+                    });
+                    newPanel.classList.add('active');
+                    currentPage = targetIndex;
+                    updateNavActive();
+                    isPageTransitioning = false;
+                    // 如果切换到MC查询页，刷新榜单显示
+                    if (targetIndex === 3) refreshLeaderboardDisplay();
+                    if (targetIndex === 0) resetCarouselAutoPlay();
+                };
+
+                setTimeout(cleanup, 480);
+            }
+
+            function updateNavActive() {
+                navItems.forEach((item, i) => {
+                    item.classList.toggle('active', i === currentPage);
+                });
+            }
+
+            // 导航点击事件
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const targetIndex = parseInt(this.getAttribute('data-nav'));
+                    if (targetIndex === currentPage || isPageTransitioning) return;
+                    const direction = targetIndex > currentPage ? 'right' : 'left';
+                    switchPage(targetIndex, direction);
+                });
+            });
+
+            // ==================== 触屏滑动切换页面 ====================
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchEndX = 0;
+            let touchEndY = 0;
+
+            appContainer.addEventListener('touchstart', function(e) {
+                // 不拦截轮播区域和输入框的触摸
+                if (e.target.closest('.carousel-3d-wrapper') || e.target.closest('.leaderboard-carousel') ||
+                    e.target.tagName === 'INPUT' || e.target.closest('button') || e.target.closest('a')) {
+                    return;
+                }
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }, { passive: true });
+
+            appContainer.addEventListener('touchend', function(e) {
+                if (e.target.closest('.carousel-3d-wrapper') || e.target.closest('.leaderboard-carousel') ||
+                    e.target.tagName === 'INPUT' || e.target.closest('button') || e.target.closest('a')) {
+                    return;
+                }
+                touchEndX = e.changedTouches[0].screenX;
+                touchEndY = e.changedTouches[0].screenY;
+                const diffX = touchEndX - touchStartX;
+                const diffY = touchEndY - touchStartY;
+                if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 60) {
+                    if (diffX < -40 && currentPage < TOTAL_PAGES - 1) {
+                        switchPage(currentPage + 1, 'right');
+                    } else if (diffX > 40 && currentPage > 0) {
+                        switchPage(currentPage - 1, 'left');
+                    }
+                }
+            });
+
+            // ==================== 三维错位轮播(主页) ====================
+            const carouselTrack = document.getElementById('carouselTrack');
+            const carouselDots = document.getElementById('carouselDots');
+            const carouselPrev = document.getElementById('carouselPrev');
+            const carouselNext = document.getElementById('carouselNext');
+            const carouselWrapper = document.getElementById('carousel3D');
+
+            function buildCarouselItems() {
+                carouselTrack.innerHTML = '';
+                for (let i = 0; i < totalCarouselSlides; i++) {
+                    const item = document.createElement('div');
+                    item.className = 'carousel-3d-item pos-hidden';
+                    item.setAttribute('data-carousel-index', i);
+                    const img = document.createElement('img');
+                    img.src = carouselImages[i];
+                    img.alt = `图库 ${i+1}`;
+                    img.loading = i <= 2 ? 'eager' : 'lazy';
+                    img.onerror = function() {
+                        this.style.backgroundColor = 'var(--code-bg)';
+                        this.style.minHeight = '120px';
+                        this.style.display = 'flex';
+                        this.style.alignItems = 'center';
+                        this.style.justifyContent = 'center';
+                        this.alt = '图片加载失败';
+                    };
+                    item.appendChild(img);
+                    carouselTrack.appendChild(item);
+                }
+                // 构建指示点
+                carouselDots.innerHTML = '';
+                for (let i = 0; i < totalCarouselSlides; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'carousel-dot';
+                    dot.setAttribute('data-dot-index', i);
+                    dot.addEventListener('click', () => goToCarouselSlide(i));
+                    carouselDots.appendChild(dot);
+                }
+                updateCarouselPositions(0);
+            }
+
+            function getCarouselPositionClass(relativeIndex, total) {
+                const absRel = ((relativeIndex % total) + total) % total;
+                const half = Math.floor(total / 2);
+                let norm = absRel;
+                if (norm > half) norm = norm - total;
+                if (norm < -half) norm = norm + total;
+                if (norm === 0) return 'pos-center';
+                if (norm === 1) return 'pos-right';
+                if (norm === -1) return 'pos-left';
+                if (norm === 2 || norm === -2) return norm > 0 ? 'pos-far-right' : 'pos-far-left';
+                return 'pos-hidden';
+            }
+
+            function updateCarouselPositions(centerIndex) {
+                const items = carouselTrack.querySelectorAll('.carousel-3d-item');
+                items.forEach((item, i) => {
+                    const relativeIndex = i - centerIndex;
+                    const posClass = getCarouselPositionClass(relativeIndex, totalCarouselSlides);
+                    item.className = 'carousel-3d-item ' + posClass;
+                    item.setAttribute('data-carousel-index', i);
+                });
+                const dots = carouselDots.querySelectorAll('.carousel-dot');
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === centerIndex);
+                });
+                carouselIndex = centerIndex;
+            }
+
+            function goToCarouselSlide(index) {
+                if (index < 0) index = totalCarouselSlides - 1;
+                if (index >= totalCarouselSlides) index = 0;
+                updateCarouselPositions(index);
+                resetCarouselAutoPlay();
+            }
+
+            function carouselNextSlide() {
+                goToCarouselSlide((carouselIndex + 1) % totalCarouselSlides);
+            }
+
+            function carouselPrevSlide() {
+                goToCarouselSlide((carouselIndex - 1 + totalCarouselSlides) % totalCarouselSlides);
+            }
+
+            function resetCarouselAutoPlay() {
+                if (carouselAutoTimer) clearInterval(carouselAutoTimer);
+                if (!carouselPaused && currentPage === 0) {
+                    carouselAutoTimer = setInterval(carouselNextSlide, 3000);
+                }
+            }
+
+            carouselPrev.addEventListener('click', () => {
+                carouselPrevSlide();
+                carouselPrev.style.transform = 'translateY(-50%) scale(0.85)';
+                setTimeout(() => { carouselPrev.style.transform = 'translateY(-50%) scale(1)'; }, 150);
+            });
+            carouselNext.addEventListener('click', () => {
+                carouselNextSlide();
+                carouselNext.style.transform = 'translateY(-50%) scale(0.85)';
+                setTimeout(() => { carouselNext.style.transform = 'translateY(-50%) scale(1)'; }, 150);
+            });
+
+            carouselWrapper.addEventListener('mouseenter', () => {
+                carouselPaused = true;
+                if (carouselAutoTimer) clearInterval(carouselAutoTimer);
+                carouselAutoTimer = null;
+            });
+            carouselWrapper.addEventListener('mouseleave', () => {
+                carouselPaused = false;
+                if (currentPage === 0) resetCarouselAutoPlay();
+            });
+            carouselWrapper.addEventListener('touchstart', () => {
+                carouselPaused = true;
+                if (carouselAutoTimer) clearInterval(carouselAutoTimer);
+                carouselAutoTimer = null;
+            }, { passive: true });
+            carouselWrapper.addEventListener('touchend', () => {
+                carouselPaused = false;
+                if (currentPage === 0) resetCarouselAutoPlay();
+            });
+
+            // ==================== MC服务器查询 ====================
+            const mcTabBtns = document.querySelectorAll('.mc-tab');
+            const mcServerInput = document.getElementById('mcServerInput');
+            const mcQueryBtn = document.getElementById('mcQueryBtn');
+            const mcResultArea = document.getElementById('mcResultArea');
+            const leaderboardTrack = document.getElementById('leaderboardTrack');
+            const leaderboardDots = document.getElementById('leaderboardDots');
+            const lbPrevBtn = document.getElementById('lbPrev');
+            const lbNextBtn = document.getElementById('lbNext');
+
+            function loadLeaderboard() {
+                try {
+                    const saved = localStorage.getItem('yucha_leaderboard');
+                    if (saved) {
+                        leaderboardData = JSON.parse(saved);
+                        if (!Array.isArray(leaderboardData)) leaderboardData = [];
+                    }
+                } catch (e) {
+                    leaderboardData = [];
+                }
+                if (leaderboardData.length > MAX_LEADERBOARD) {
+                    leaderboardData = leaderboardData.slice(0, MAX_LEADERBOARD);
+                }
+            }
+
+            function saveLeaderboard() {
+                try {
+                    localStorage.setItem('yucha_leaderboard', JSON.stringify(leaderboardData));
+                } catch (e) {}
+            }
+
+            function addToLeaderboard(serverInfo) {
+                const existingIndex = leaderboardData.findIndex(s => s.address === serverInfo.address && s.type === serverInfo.type);
+                if (existingIndex >= 0) {
+                    leaderboardData[existingIndex] = { ...leaderboardData[existingIndex], ...serverInfo, lastSeen: Date.now() };
+                } else {
+                    if (leaderboardData.length >= MAX_LEADERBOARD) {
+                        leaderboardData.sort((a, b) => (a.lastSeen || 0) - (b.lastSeen || 0));
+                        leaderboardData.shift();
+                    }
+                    leaderboardData.push({ ...serverInfo, lastSeen: Date.now() });
+                }
+                saveLeaderboard();
+            }
+
+            function removeOfflineFromLeaderboard(address, type) {
+                const before = leaderboardData.length;
+                leaderboardData = leaderboardData.filter(s => !(s.address === address && s.type === type));
+                if (leaderboardData.length !== before) saveLeaderboard();
+            }
+
+            function buildLeaderboardItems() {
+                leaderboardTrack.innerHTML = '';
+                if (leaderboardData.length === 0) {
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.className = 'leaderboard-item glass-card';
+                    emptyDiv.style.cssText = 'flex:1;text-align:center;padding:20px;cursor:default;';
+                    emptyDiv.innerHTML = '<span style="color:var(--text-secondary);">榜单为空，查询在线服务器后自动录入</span>';
+                    leaderboardTrack.appendChild(emptyDiv);
+                    leaderboardDots.innerHTML = '';
+                    return;
+                }
+                leaderboardData.forEach((server, i) => {
+                    const item = document.createElement('div');
+                    item.className = 'leaderboard-item glass-card';
+                    item.innerHTML = `
+                <div class="lb-addr">${escapeHTML(server.address)}</div>
+                <div class="lb-players">🟢 ${server.playersOnline || 0}/${server.playersMax || 0} | ${escapeHTML(server.version || '?')}</div>
+                <div style="font-size:0.7rem;color:var(--text-secondary);margin-top:2px;">${server.type === 'bedrock' ? '基岩版' : 'Java版'}</div>
+              `;
+                    item.addEventListener('click', () => {
+                        const addr = server.address;
+                        navigator.clipboard.writeText(addr).then(() => {
+                            showToast('✅ 已复制地址: ' + addr);
+                        }).catch(() => {
+                            showToast('📋 地址: ' + addr);
+                        });
+                    });
+                    leaderboardTrack.appendChild(item);
+                });
+                updateLeaderboardPagination();
+            }
+
+            function updateLeaderboardPagination() {
+                const totalItems = leaderboardData.length;
+                if (totalItems === 0) {
+                    leaderboardDots.innerHTML = '';
+                    lbCurrentPage = 0;
+                    leaderboardTrack.style.transform = 'translateX(0)';
+                    return;
+                }
+                if (window.innerWidth <= 420) {
+                    lbItemsPerPage = 1;
+                } else if (window.innerWidth <= 768) {
+                    lbItemsPerPage = 2;
+                } else {
+                    lbItemsPerPage = 5;
+                }
+                const totalPages = Math.ceil(totalItems / lbItemsPerPage);
+                if (lbCurrentPage >= totalPages) lbCurrentPage = totalPages - 1;
+                if (lbCurrentPage < 0) lbCurrentPage = 0;
+                const gapPx = 12;
+                leaderboardTrack.style.transform = `translateX(calc(${-lbCurrentPage * 100}% - ${lbCurrentPage * gapPx}px))`;
+
+                leaderboardDots.innerHTML = '';
+                for (let i = 0; i < totalPages; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'leaderboard-dot';
+                    if (i === lbCurrentPage) dot.classList.add('active');
+                    dot.addEventListener('click', () => {
+                        lbCurrentPage = i;
+                        updateLeaderboardPagination();
+                    });
+                    leaderboardDots.appendChild(dot);
+                }
+            }
+
+            function refreshLeaderboardDisplay() {
+                buildLeaderboardItems();
+                updateLeaderboardPagination();
+            }
+
+            lbPrevBtn.addEventListener('click', () => {
+                const totalPages = Math.ceil(leaderboardData.length / lbItemsPerPage);
+                if (totalPages <= 1) return;
+                lbCurrentPage = (lbCurrentPage - 1 + totalPages) % totalPages;
+                updateLeaderboardPagination();
+            });
+            lbNextBtn.addEventListener('click', () => {
+                const totalPages = Math.ceil(leaderboardData.length / lbItemsPerPage);
+                if (totalPages <= 1) return;
+                lbCurrentPage = (lbCurrentPage + 1) % totalPages;
+                updateLeaderboardPagination();
+            });
+
+            window.addEventListener('resize', () => {
+                if (currentPage === 3) updateLeaderboardPagination();
+            });
+
+            mcTabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    mcTabBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    mcServerTab = this.getAttribute('data-tab');
+                    mcResultArea.innerHTML = '';
+                });
+            });
+
+            mcQueryBtn.addEventListener('click', performMCQuery);
+            mcServerInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') performMCQuery();
+            });
+
+            async function performMCQuery() {
+                const rawInput = mcServerInput.value.trim();
+                if (!rawInput) {
+                    showToast('⚠️ 请输入服务器IP或域名');
+                    return;
+                }
+                let address = rawInput;
+                mcQueryBtn.textContent = '⏳ 查询中...';
+                mcQueryBtn.disabled = true;
+                mcResultArea.innerHTML = '';
+
+                let apiUrl;
+                if (mcServerTab === 'bedrock') {
+                    apiUrl = `https://api.mcsrvstat.us/bedrock/2/${encodeURIComponent(address)}`;
+                } else {
+                    apiUrl = `https://api.mcsrvstat.us/2/${encodeURIComponent(address)}`;
+                }
+
+                try {
+                    const response = await fetch(apiUrl, { signal: AbortSignal.timeout(12000) });
+                    if (!response.ok) throw new Error('API响应异常');
+                    const data = await response.json();
+
+                    if (data.online) {
+                        const serverInfo = {
+                            address: address,
+                            type: mcServerTab,
+                            playersOnline: data.players?.online || 0,
+                            playersMax: data.players?.max || 0,
+                            version: data.version || '未知',
+                            motd: data.motd?.raw?.join(' ') || data.motd?.clean?.join(' ') || '无MOTD',
+                            icon: data.icon || null,
+                            lastSeen: Date.now(),
+                        };
+                        addToLeaderboard(serverInfo);
+                        if (currentPage === 3) refreshLeaderboardDisplay();
+
+                        const iconHtml = data.icon ?
+                            `<img src="${data.icon}" class="mc-result-icon" alt="服务器图标" onerror="this.style.display='none';">` :
+                            `<div class="mc-result-icon" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🖥️</div>`;
+                        mcResultArea.innerHTML = `
+                  <div class="glass-card mc-result-card" style="animation:fadeInUp 0.5s ease forwards;">
+                    ${iconHtml}
+                    <div class="mc-result-info">
+                      <div class="mc-result-status"><span class="status-dot online"></span> 在线</div>
+                      <div class="mc-result-detail">
+                        👥 在线人数: ${serverInfo.playersOnline}/${serverInfo.playersMax}<br>
+                        📦 游戏版本: ${escapeHTML(serverInfo.version)}<br>
+                        💬 MOTD: ${escapeHTML(serverInfo.motd.substring(0, 80))}${serverInfo.motd.length > 80 ? '...' : ''}
+                      </div>
+                    </div>
+                  </div>`;
+                        showToast('✅ 服务器在线，已录入榜单');
+                    } else {
+                        removeOfflineFromLeaderboard(address, mcServerTab);
+                        if (currentPage === 3) refreshLeaderboardDisplay();
+                        mcResultArea.innerHTML = `
+                  <div class="glass-card mc-result-card" style="animation:fadeInUp 0.5s ease forwards;">
+                    <div class="mc-result-icon" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🔴</div>
+                    <div class="mc-result-info">
+                      <div class="mc-result-status"><span class="status-dot offline"></span> 离线</div>
+                      <div class="mc-result-detail">服务器 ${escapeHTML(address)} 当前离线，未录入榜单。</div>
+                    </div>
+                  </div>`;
+                        showToast('🔴 服务器离线，未录入榜单');
+                    }
+                } catch (err) {
+                    mcResultArea.innerHTML = `
+                <div class="glass-card mc-result-card" style="animation:fadeInUp 0.5s ease forwards;">
+                  <div class="mc-result-icon" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem;">⚠️</div>
+                  <div class="mc-result-info">
+                    <div class="mc-result-status">查询失败</div>
+                    <div class="mc-result-detail">${escapeHTML(err.message || '网络错误或API不可用')}</div>
+                  </div>
+                </div>`;
+                    showToast('⚠️ 查询失败，请检查网络或稍后重试');
+                } finally {
+                    mcQueryBtn.textContent = '🔍 查询';
+                    mcQueryBtn.disabled = false;
+                }
+            }
+
+            function escapeHTML(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            async function refreshAllLeaderboardServers() {
+                if (leaderboardData.length === 0) return;
+                const serversToCheck = [...leaderboardData];
+                const stillOnline = [];
+
+                for (const server of serversToCheck) {
+                    let apiUrl;
+                    if (server.type === 'bedrock') {
+                        apiUrl = `https://api.mcsrvstat.us/bedrock/2/${encodeURIComponent(server.address)}`;
+                    } else {
+                        apiUrl = `https://api.mcsrvstat.us/2/${encodeURIComponent(server.address)}`;
+                    }
+                    try {
+                        const response = await fetch(apiUrl, { signal: AbortSignal.timeout(8000) });
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data.online) {
+                                stillOnline.push({
+                                    ...server,
+                                    playersOnline: data.players?.online || 0,
+                                    playersMax: data.players?.max || 0,
+                                    version: data.version || server.version,
+                                    lastSeen: Date.now(),
+                                });
+                            }
+                        } else {
+                            stillOnline.push(server);
+                        }
+                    } catch (e) {
+                        stillOnline.push(server);
+                    }
+                }
+                leaderboardData = stillOnline.slice(0, MAX_LEADERBOARD);
+                saveLeaderboard();
+                if (currentPage === 3) refreshLeaderboardDisplay();
+            }
+
+            function startLeaderboardRefresh() {
+                if (leaderboardRefreshTimer) clearInterval(leaderboardRefreshTimer);
+                leaderboardRefreshTimer = setInterval(refreshAllLeaderboardServers, 60000);
+            }
+
+            // ==================== 停服计时器 ====================
+            const dtDays = document.getElementById('dtDays');
+            const dtHours = document.getElementById('dtHours');
+            const dtMinutes = document.getElementById('dtMinutes');
+            const dtSeconds = document.getElementById('dtSeconds');
+
+            function updateDowntime() {
+                const now = Date.now();
+                let diff = Math.max(0, now - downtimeStart);
+                const totalSeconds = Math.floor(diff / 1000);
+                const days = Math.floor(totalSeconds / 86400);
+                const hours = Math.floor((totalSeconds % 86400) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                const currentValues = { days, hours, minutes, seconds };
+
+                function updateDigit(el, newVal, oldVal) {
+                    if (newVal !== oldVal && oldVal !== -1) {
+                        el.textContent = newVal;
+                        el.classList.remove('bounce');
+                        void el.offsetWidth;
+                        el.classList.add('bounce');
+                    } else {
+                        el.textContent = newVal;
+                    }
+                }
+
+                updateDigit(dtDays, days, downtimePrevValues.days);
+                updateDigit(dtHours, hours, downtimePrevValues.hours);
+                updateDigit(dtMinutes, minutes, downtimePrevValues.minutes);
+                updateDigit(dtSeconds, seconds, downtimePrevValues.seconds);
+
+                downtimePrevValues = currentValues;
+            }
+
+            // ==================== 反馈联系页跳转MC ====================
+            const contactToMC = document.getElementById('contactToMC');
+            if (contactToMC) {
+                contactToMC.addEventListener('click', () => {
+                    switchPage(3, 'right');
+                });
+            }
+
+            // ==================== 初始化 ====================
+            function init() {
+                loadLeaderboard();
+                buildCarouselItems();
+                buildLeaderboardItems();
+                updateLeaderboardPagination();
+                updateNavActive();
+                updateDowntime();
+                setInterval(updateDowntime, 1000);
+                startLeaderboardRefresh();
+                if (currentPage === 0) resetCarouselAutoPlay();
+
+                // 完全依赖CSS类，移除所有内联样式
+                pagePanels.forEach((p, i) => {
+                    p.style.position = '';
+                    p.style.opacity = '';
+                    p.style.transform = '';
+                    p.style.pointerEvents = '';
+                    p.classList.remove('active', 'exit-left', 'exit-right', 'enter-from-left', 'enter-from-right', 'animating');
+                });
+                pagePanels[0].classList.add('active');
+                currentPage = 0;
+                previousPage = 0;
+            }
+
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    if (currentPage === 3) refreshLeaderboardDisplay();
+                    if (currentPage === 0 && !carouselPaused) resetCarouselAutoPlay();
+                    updateDowntime();
+                } else {
+                    if (carouselAutoTimer) clearInterval(carouselAutoTimer);
+                    carouselAutoTimer = null;
+                }
+            });
+
+            window.addEventListener('resize', () => {
+                if (currentPage === 3) updateLeaderboardPagination();
+                if (currentPage === 0) updateCarouselPositions(carouselIndex);
+            });
+
+            init();
+            console.log('🍵 柚茶 - 网站已就绪');
+            console.log('  主题:', savedTheme === 'dark' ? '暗黑模式' : '明亮模式');
+            console.log('  当前页面: 主页');
+            console.log('  榜单服务器数:', leaderboardData.length);
+            console.log('  GitHub Pages部署就绪 ✓');
+        })();
+    </script>
+</body>
+</html>
