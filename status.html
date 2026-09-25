@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>闲云阁 · 状态</title>
+<meta name="description" content="闲云阁 MC 服务器实时状态 —— 服务器地址 nyj.cc.cd，进服版本 1.12-26.2，推荐 26.2。">
+<link rel="icon" href="https://upload-bbs.miyoushe.com/upload/2023/09/02/358169320/827eb44ee6d12910b3d124dba853b1c4_4269959356979371185.jpg">
+<script>(function(){try{var t=localStorage.getItem('xyg-theme');if(!t){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.setAttribute('data-theme',t)}catch(e){document.documentElement.setAttribute('data-theme','light')}})();</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page-bg" aria-hidden="true"></div>
+<div class="page-tint" aria-hidden="true"></div>
+<div class="blobs" aria-hidden="true"><span class="b1"></span><span class="b2"></span></div>
+
+<header class="site-header wrap">
+  <div class="header-inner">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="https://upload-bbs.miyoushe.com/upload/2023/09/02/358169320/827eb44ee6d12910b3d124dba853b1c4_4269959356979371185.jpg"闲云阁图标">
+      闲云阁
+    </a>
+    <nav class="nav" id="siteNav" aria-label="站内导航">
+      <a href="index.html">首页</a>
+      <a href="status.html">状态</a>
+      <a href="announcements.html">公告</a>
+      <a href="faq.html">问题解答</a>
+      <a href="links.html">链接</a>
+      <a href="about.html">关于我们</a>
+    </nav>
+    <div class="header-actions">
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="切换深浅模式">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></svg>
+      </button>
+      <button id="menuBtn" class="icon-btn menu-btn" type="button" aria-label="打开菜单">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="page-head">
+    <p class="kicker">Server Status</p>
+    <h1>闲云阁 MC 服务器</h1>
+    <p class="sub">进服版本 1.12 - 26.2 · 推荐 <strong>26.2</strong></p>
+  </section>
+
+  <!-- 地址与操作 -->
+  <section class="addr-card glass reveal">
+    <div>
+      <p class="addr-label">服务器地址</p>
+      <p class="addr-value">nyj.cc.cd</p>
+    </div>
+    <div class="addr-actions">
+      <button id="refreshBtn" class="btn btn-sm" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+        刷新状态
+      </button>
+      <button class="btn btn-sm btn-accent" type="button" data-copy="nyj.cc.cd">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15H4.5A2.5 2.5 0 0 1 2 12.5v-8A2.5 2.5 0 0 1 4.5 2h8A2.5 2.5 0 0 1 15 4.5V5"/></svg>
+        复制服务器 IP
+      </button>
+    </div>
+    <div class="refresh-meta">
+      <span id="updatedTime">最近更新：--:--:--</span>
+      <span id="nextIn">下次刷新：60 秒后</span>
+    </div>
+  </section>
+
+  <!-- 指标 -->
+  <section class="stats-grid reveal">
+    <div class="stat-card glass glass-hover">
+      <p class="stat-label">
+        <span id="dotStatus" class="dot on"></span> 在线状态
+      </p>
+      <p class="stat-value status-pill on" id="stOnline">检测中</p>
+    </div>
+    <div class="stat-card glass glass-hover">
+      <p class="stat-label">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 8L9 4l-3 8H2"/></svg>
+        运行状态
+      </p>
+      <p class="stat-value" id="stRun">--</p>
+    </div>
+    <div class="stat-card glass glass-hover">
+      <p class="stat-label">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.4"/><path d="M2.8 19.5c.8-3.3 3.2-5 6.2-5s5.4 1.7 6.2 5"/></svg>
+        在线玩家人数
+      </p>
+      <p class="stat-value">
+        <span id="playersVal">--</span>
+        <small id="playersMax"></small>
+      </p>
+    </div>
+    <div class="stat-card glass glass-hover">
+      <p class="stat-label">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 2-9 12h7l-1 8 9-12h-7l1-8z"/></svg>
+        平均延迟
+      </p>
+      <p class="stat-value" id="latencyVal">-- ms</p>
+    </div>
+  </section>
+
+  <!-- 版本 & MOTD -->
+  <section class="motd-line reveal">
+    <b>版本</b><span id="verText">获取中…</span>
+    <b style="margin-left:8px;">MOTD</b><span id="motdText">—</span>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    © 2025-2026 闲云阁 · 柚茶的小型服务器 · 愿你此间 <span class="heart">清闲自在 ^_^</span>
+  </div>
+</footer>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<script src="main.js" defer></script>
+<script src="status.js" defer></script>
+</body>
+</html>
